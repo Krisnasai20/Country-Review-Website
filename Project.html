@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Review Website</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f6f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .header {
+      background-color: #fff;
+      padding: 20px 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      font-size: 2em;
+      font-weight: bold;
+      color: #f39c12;
+      text-transform: capitalize;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover, .nav-links a:focus {
+      color: #f39c12;
+    }
+    
+    .nav-links a.active {
+      color: #f39c12;
+    }
+    
+    .hero-section {
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+    
+    .hero-title {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    #countrySearch {
+      padding: 10px;
+      width: 300px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      display: block;
+    }
+    
+    .continent-tabs {
+      margin-bottom: 30px;
+    }
+    
+    .continent-tabs button {
+      margin: 5px;
+      padding: 10px 25px;
+      font-size: 0.95em;
+      border: none;
+      background-color: #f39c12;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .continent-tabs button:hover, .continent-tabs button:focus {
+      background: linear-gradient(45deg, #ffd700, #ff69b4, #00ffff, #800080);
+      background-size: 200% 200%;
+      animation: glitter 2s linear infinite;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .continent-tabs button.active {
+      background-color: #e67e22;
+      transform: translateY(-2px);
+    }
+
+    @keyframes glitter {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .discover-btn {
+      background-color: #e74c3c;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 5px;
+      font-size: 0.95em;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .discover-btn:hover, .discover-btn:focus {
+      background: linear-gradient(45deg, #ffd700, #ff69b4, #00ffff, #800080);
+      background-size: 200% 200%;
+      animation: glitter 2s linear infinite;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .country-card {
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease forwards;
+      cursor: pointer;
+    }
+    
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .country-card:nth-child(1) { animation-delay: 0.1s; }
+    .country-card:nth-child(2) { animation-delay: 0.2s; }
+    .country-card:nth-child(3) { animation-delay: 0.3s; }
+    .country-card:nth-child(4) { animation-delay: 0.4s; }
+    .country-card:nth-child(5) { animation-delay: 0.5s; }
+    .country-card:nth-child(6) { animation-delay: 0.6s; }
+    .country-card:nth-child(7) { animation-delay: 0.7s; }
+    .country-card:nth-child(8) { animation-delay: 0.8s; }
+    .country-card:nth-child(9) { animation-delay: 0.9s; }
+    .country-card:nth-child(10) { animation-delay: 1.0s; }
+    
+    .country-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .country-card h3 {
+      margin: 12px 0 5px;
+      font-size: 1.2em;
+      transition: color 0.3s ease;
+    }
+    
+    .country-card p {
+      margin: 6px;
+      font-size: 0.9em;
+      color: #666;
+      transition: color 0.3s ease;
+    }
+    
+    .country-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .country-card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .country-card:hover h3 {
+      color: #f39c12;
+    }
+    
+    .country-card .discover-btn {
+      margin: 12px auto;
+      padding: 6px 15px;
+      font-size: 0.85em;
+    }
+
+    .top10-section {
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .top10-title {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 30px;
+      color: #333;
+      opacity: 0;
+      animation: fadeInTitle 0.5s ease forwards;
+    }
+    
+    @keyframes fadeInTitle {
+      to { opacity: 1; }
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-size: 1.2em;
+      color: #666;
+    }
+    
+    #countryModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background: #fff;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: modalPop 0.3s ease forwards;
+    }
+    
+    @keyframes modalPop {
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @media (max-width: 600px) {
+      .country-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 1.8em;
+      }
+      .continent-tabs button {
+        padding: 8px 15px;
+        font-size: 0.85em;
+      }
+      #countrySearch {
+        width: 80%;
+      }
+    }
+    
+    button:focus, a:focus, input:focus {
+      outline: 2px solid #f39c12;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-content">
+    <div class="logo">Country Review</div>
+    <nav class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="#" class="active">Home</a>
+      <a href="#top10" id="top10Link">Top 10 Countries</a>
+      <a href="#all-countries" id="allCountriesLink">All Countries</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero-section">
+  <h1 class="hero-title">Beyond Borders: Exploring the World</h1>
+  <p class="hero-subtitle">Discover the most fascinating countries, their cultures, and must-visit destinations from around the globe.</p>
+  <input type="text" id="countrySearch" placeholder="Search countries..." aria-label="Search countries">
+  <div class="continent-tabs">
+    <button onclick="loadContinent('Asia')" aria-label="Filter by Asia">Asia</button>
+    <button onclick="loadContinent('Europe')" aria-label="Filter by Europe">Europe</button>
+    <button onclick="loadContinent('Africa')" aria-label="Filter by Africa">Africa</button>
+    <button onclick="loadContinent('North America')" aria-label="Filter by North America">North America</button>
+    <button onclick="loadContinent('South America')" aria-label="Filter by South America">South America</button>
+    <button onclick="loadContinent('Oceania')" aria-label="Filter by Oceania">Oceania</button>
+    <button onclick="loadContinent('Antarctic')" aria-label="Filter by Antarctica">Antarctica</button>
+  </div>
+  <a href="#top10" class="discover-btn">Discover Now</a>
+</section>
+
+<section id="top10" class="top10-section">
+  <h2 class="top10-title">Top 10 Countries</h2>
+  <div class="country-grid" id="countryGrid"></div>
+</section>
+
+<div id="countryModal">
+  <div class="modal-content">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDetails"></p>
+    <button onclick="closeModal()" class="discover-btn">Close</button>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://restcountries.com/v3.1/all';
+
+const countryRatings = {
+  "France": { city: "Paris", famous: "Eiffel Tower and wine", rating: 5.0},
+  "Spain": { city: "Barcelona", famous: "Flamenco and beaches", rating: 4.8 },
+  "United States": { city: "New York", famous: "Diverse landscapes and culture", rating: 4.8 },
+  "China": { city: "Beijing", famous: "Great Wall and cuisine", rating: 4.8 },
+  "Italy": { city: "Rome", famous: "Colosseum and pasta", rating: 4.9 },
+  "Turkey": { city: "Istanbul", famous: "Bazaars and history", rating: 4.7 },
+  "Mexico": { city: "Mexico City", famous: "Ancient ruins and beaches", rating: 4.7 },
+  "Thailand": { city: "Bangkok", famous: "Temples and street food", rating: 4.9 },
+  "Germany": { city: "Berlin", famous: "Beer and castles", rating: 4.8 },
+  "United Kingdom": { city: "London", famous: "Big Ben and royal family", rating: 4.8 },
+  "Japan": { city: "Tokyo", famous: "Technology and tradition", rating: 4.5 },
+  "Australia": { city: "Sydney", famous: "Opera House and beaches", rating: 4.7 },
+  "Canada": { city: "Toronto", famous: "Natural beauty and multiculturalism", rating: 4.7 },
+  "India": { city: "Delhi", famous: "Diverse culture and cuisine", rating: 4.1 },
+  "Brazil": { city: "Rio de Janeiro", famous: "Carnival and Amazon rainforest", rating: 4.1 },
+  "South Africa": { city: "Cape Town", famous: "Safaris and Table Mountain", rating: 4.0 },
+  "Egypt": { city: "Cairo", famous: "Pyramids and Nile River", rating: 4.2 },
+  "South Korea": { city: "Seoul", famous: "K-pop and technology", rating: 4.6 },
+  "Singapore": { city: "Singapore", famous: "Cleanliness and food", rating: 4.5 },
+  "New Zealand": { city: "Auckland", famous: "Nature and adventure sports", rating: 4.5 },
+  "Switzerland": { city: "Zurich", famous: "Alps and chocolate", rating: 4.6 },
+  "Netherlands": { city: "Amsterdam", famous: "Canals and museums", rating: 4.6 },
+  "Greece": { city: "Athens", famous: "Ancient history and islands", rating: 4.3 },
+  "Portugal": { city: "Lisbon", famous: "Beaches and architecture", rating: 4.1 },
+  "Vietnam": { city: "Hanoi", famous: "Street food and landscapes", rating: 3.9 },
+  "Indonesia": { city: "Bali", famous: "Beaches and culture", rating: 3.8 },
+  "Malaysia": { city: "Kuala Lumpur", famous: "Petronas Towers and food", rating: 4.0 },
+  "Philippines": { city: "Manila", famous: "Islands and hospitality", rating: 4.0 },
+  "Argentina": { city: "Buenos Aires", famous: "Tango and steak", rating: 4.1 },
+  "Chile": { city: "Santiago", famous: "Mountains and wine", rating: 4.2 },
+  "Peru": { city: "Lima", famous: "Machu Picchu and cuisine", rating: 3.8 },
+  "Colombia": { city: "Bogotá", famous: "Coffee and culture", rating: 4.0 },
+  "Costa Rica": { city: "San José", famous: "Eco-tourism and beaches", rating: 4.5 },
+  "Morocco": { city: "Marrakesh", famous: "Markets and architecture", rating: 4.3 },
+  "Kenya": { city: "Nairobi", famous: "Safaris and wildlife", rating: 4.5 },
+  "Tanzania": { city: "Dar es Salaam", famous: "Serengeti and Zanzibar", rating: 4.3 },
+  "Norway": { city: "Oslo", famous: "Fjords and northern lights", rating: 4.7 },
+  "Sweden": { city: "Stockholm", famous: "Design and nature", rating: 4.6 },
+  "Finland": { city: "Helsinki", famous: "Lakes and saunas", rating: 4.5 },
+  "Denmark": { city: "Copenhagen", famous: "Hygge and design", rating: 4.6 },
+  "Belgium": { city: "Brussels", famous: "Chocolate and EU capital", rating: 4.4 },
+  "Austria": { city: "Vienna", famous: "Music and mountains", rating: 4.6 },
+  "Czech Republic": { city: "Prague", famous: "Castle and beer", rating: 4.5 },
+  "Hungary": { city: "Budapest", famous: "Thermal baths and architecture", rating: 4.4 },
+  "Poland": { city: "Warsaw", famous: "History and resilience", rating: 4.3 },
+  "Russia": { city: "Moscow", famous: "Red Square and culture", rating: 4.2 },
+  "Iceland": { city: "Reykjavik", famous: "Geothermal wonders", rating: 4.7 },
+  "Ireland": { city: "Dublin", famous: "Pub culture and landscapes", rating: 4.5 },
+  "Scotland": { city: "Edinburgh", famous: "Castles and whisky", rating: 4.6 },
+  "Wales": { city: "Cardiff", famous: "Castles and nature", rating: 4.4 },
+  "Northern Ireland": { city: "Belfast", famous: "History and landscapes", rating: 4.3 },
+  "Croatia": { city: "Dubrovnik", famous: "Coastline and Game of Thrones", rating: 4.5 },
+  "Serbia": { city: "Belgrade", famous: "Nightlife and history", rating: 4.1 },
+  "Romania": { city: "Bucharest", famous: "Castles and nature", rating: 4.2 },
+  "Bulgaria": { city: "Sofia", famous: "Mountains and history", rating: 4.1 },
+  "Ukraine": { city: "Kyiv", famous: "Culture and architecture", rating: 4.0 },
+  "Estonia": { city: "Tallinn", famous: "Medieval old town", rating: 4.3 },
+  "Latvia": { city: "Riga", famous: "Art nouveau architecture", rating: 4.2 },
+  "Lithuania": { city: "Vilnius", famous: "Baroque architecture", rating: 4.2 },
+  "Slovakia": { city: "Bratislava", famous: "Castles and mountains", rating: 4.2 },
+  "Slovenia": { city: "Ljubljana", famous: "Lake Bled and caves", rating: 4.4 },
+  "Albania": { city: "Tirana", famous: "Beaches and history", rating: 4.0 },
+  "North Macedonia": { city: "Skopje", famous: "History and nature", rating: 4.0 },
+  "Montenegro": { city: "Podgorica", famous: "Bay of Kotor", rating: 4.3 },
+  "Bosnia and Herzegovina": { city: "Sarajevo", famous: "History and nature", rating: 4.1 },
+  "Malta": { city: "Valletta", famous: "History and diving", rating: 4.4 },
+  "Cyprus": { city: "Nicosia", famous: "Beaches and history", rating: 4.3 },
+  "Luxembourg": { city: "Luxembourg", famous: "Finance and castles", rating: 4.4 },
+  "Liechtenstein": { city: "Vaduz", famous: "Alps and banking", rating: 4.3 },
+  "Monaco": { city: "Monaco", famous: "Grand Prix and casinos", rating: 4.5 },
+  "Andorra": { city: "Andorra la Vella", famous: "Skiing and shopping", rating: 4.2 },
+  "San Marino": { city: "San Marino", famous: "History and views", rating: 4.1 },
+  "Vatican City": { city: "Vatican City", famous: "St. Peter's Basilica", rating: 4.5 },
+  "Israel": { city: "Jerusalem", famous: "Religious sites", rating: 4.3 },
+  "Palestine": { city: "Bethlehem", famous: "Religious significance", rating: 4.0 },
+  "Jordan": { city: "Amman", famous: "Petra and Dead Sea", rating: 4.4 },
+  "Lebanon": { city: "Beirut", famous: "Food and history", rating: 4.1 },
+  "Syria": { city: "Damascus", famous: "Ancient history", rating: 3.5 },
+  "Iraq": { city: "Baghdad", famous: "Ancient history", rating: 3.2 },
+  "Iran": { city: "Tehran", famous: "Persian culture", rating: 3.7 },
+  "Saudi Arabia": { city: "Riyadh", famous: "Islamic heritage", rating: 4.0 },
+  "United Arab Emirates": { city: "Dubai", famous: "Modern architecture", rating: 4.6 },
+  "Qatar": { city: "Doha", famous: "Modernity and desert", rating: 4.4 },
+  "Kuwait": { city: "Kuwait City", famous: "Oil wealth and culture", rating: 4.0 },
+  "Bahrain": { city: "Manama", famous: "Pearl diving history", rating: 4.1 },
+  "Oman": { city: "Muscat", famous: "Desert and forts", rating: 4.3 },
+  "Yemen": { city: "Sana'a", famous: "Ancient architecture", rating: 3.0 },
+  "Afghanistan": { city: "Kabul", famous: "History and mountains", rating: 2.5 },
+  "Pakistan": { city: "Islamabad", famous: "Mountains and culture", rating: 3.3 },
+  "Bangladesh": { city: "Dhaka", famous: "Culture and rivers", rating: 3.7 },
+  "Sri Lanka": { city: "Colombo", famous: "Beaches and tea", rating: 4.3 },
+  "Nepal": { city: "Kathmandu", famous: "Himalayas and trekking", rating: 4.4 },
+  "Bhutan": { city: "Thimphu", famous: "Happiness index", rating: 4.5 },
+  "Maldives": { city: "Malé", famous: "Luxury resorts", rating: 4.7 },
+  "Myanmar": { city: "Yangon", famous: "Pagodas and culture", rating: 4.1 },
+  "Laos": { city: "Vientiane", famous: "Buddhist culture", rating: 4.2 },
+  "Cambodia": { city: "Phnom Penh", famous: "Angkor Wat", rating: 4.3 },
+  "Mongolia": { city: "Ulaanbaatar", famous: "Steppe and nomads", rating: 4.1 },
+  "Taiwan": { city: "Taipei", famous: "Night markets and tech", rating: 4.6 },
+  "Hong Kong": { city: "Hong Kong", famous: "Skyline and shopping", rating: 4.7 },
+  "Macau": { city: "Macau", famous: "Casinos and fusion culture", rating: 4.5 },
+  "North Korea": { city: "Pyongyang", famous: "Unique political system", rating: 2.0 },
+  "Fiji": { city: "Suva", famous: "Beaches and diving", rating: 4.5 },
+  "Papua New Guinea": { city: "Port Moresby", famous: "Tribal culture", rating: 3.8 },
+  "Solomon Islands": { city: "Honiara", famous: "WWII history", rating: 3.9 },
+  "Vanuatu": { city: "Port Vila", famous: "Volcanoes and beaches", rating: 4.2 },
+  "Samoa": { city: "Apia", famous: "Culture and nature", rating: 4.3 },
+  "Tonga": { city: "Nuku'alofa", famous: "Royal heritage", rating: 4.1 },
+  "Kiribati": { city: "South Tarawa", famous: "Atolls and fishing", rating: 3.9 },
+  "Marshall Islands": { city: "Majuro", famous: "Atolls and diving", rating: 4.0 },
+  "Micronesia": { city: "Palikir", famous: "Islands and culture", rating: 4.0 },
+  "Palau": { city: "Ngerulmud", famous: "Rock Islands", rating: 4.5 },
+  "Nauru": { city: "Yaren", famous: "Phosphate mining", rating: 3.5 },
+  "Tuvalu": { city: "Funafuti", famous: "Climate change issues", rating: 3.8 },
+  "Haiti": { city: "Port-au-Prince", famous: "History and culture", rating: 3.2 },
+  "Dominican Republic": { city: "Santo Domingo", famous: "Beaches and baseball", rating: 4.3 },
+  "Jamaica": { city: "Kingston", famous: "Reggae and beaches", rating: 4.4 },
+  "Cuba": { city: "Havana", famous: "Classic cars and cigars", rating: 4.3 },
+  "Bahamas": { city: "Nassau", famous: "Resorts and beaches", rating: 4.6 },
+  "Barbados": { city: "Bridgetown", famous: "Beaches and cricket", rating: 4.5 },
+  "Saint Lucia": { city: "Castries", famous: "Pitons and beaches", rating: 4.4 },
+  "Grenada": { city: "St. George's", famous: "Spice island", rating: 4.3 },
+  "Saint Vincent and the Grenadines": { city: "Kingstown", famous: "Sailing and beaches", rating: 4.3 },
+  "Antigua and Barbuda": { city: "St. John's", famous: "365 beaches", rating: 4.5 },
+  "Dominica": { city: "Roseau", famous: "Nature island", rating: 4.4 },
+  "Saint Kitts and Nevis": { city: "Basseterre", famous: "History and beaches", rating: 4.3 },
+  "Trinidad and Tobago": { city: "Port of Spain", famous: "Carnival and beaches", rating: 4.2 },
+  "Belize": { city: "Belmopan", famous: "Barrier reef and ruins", rating: 4.4 },
+  "Panama": { city: "Panama City", famous: "Canal and biodiversity", rating: 4.3 },
+  "Nicaragua": { city: "Managua", famous: "Lakes and volcanoes", rating: 4.1 },
+  "Honduras": { city: "Tegucigalpa", famous: "Mayan ruins and beaches", rating: 4.0 },
+  "El Salvador": { city: "San Salvador", famous: "Surfing and volcanoes", rating: 4.0 },
+  "Guatemala": { city: "Guatemala City", famous: "Mayan culture and lakes", rating: 4.2 },
+  "Ecuador": { city: "Quito", famous: "Galapagos and Andes", rating: 4.4 },
+  "Venezuela": { city: "Caracas", famous: "Angel Falls and beaches", rating: 3.5 },
+  "Guyana": { city: "Georgetown", famous: "Rainforest and culture", rating: 3.9 },
+  "Suriname": { city: "Paramaribo", famous: "Diversity and nature", rating: 4.0 },
+  "French Guiana": { city: "Cayenne", famous: "Space center and nature", rating: 4.1 },
+  "Paraguay": { city: "Asunción", famous: "Jesuit ruins and culture", rating: 4.0 },
+  "Uruguay": { city: "Montevideo", famous: "Beaches and culture", rating: 4.3 },
+  "Bolivia": { city: "La Paz", famous: "Salt flats and Andes", rating: 4.2 },
+  "Algeria": { city: "Algiers", famous: "Sahara and history", rating: 4.0 },
+  "Libya": { city: "Tripoli", famous: "Roman ruins and desert", rating: 3.2 },
+  "Tunisia": { city: "Tunis", famous: "Ancient Carthage", rating: 4.1 },
+  "Sudan": { city: "Khartoum", famous: "Nile confluence", rating: 3.5 },
+  "South Sudan": { city: "Juba", famous: "Wildlife and culture", rating: 3.0 },
+  "Ethiopia": { city: "Addis Ababa", famous: "Ancient history", rating: 4.1 },
+  "Eritrea": { city: "Asmara", famous: "Italian architecture", rating: 3.8 },
+  "Djibouti": { city: "Djibouti", famous: "Strategic location", rating: 3.7 },
+  "Somalia": { city: "Mogadishu", famous: "Coastline and culture", rating: 2.5 },
+  "Uganda": { city: "Kampala", famous: "Gorillas and lakes", rating: 4.2 },
+  "Rwanda": { city: "Kigali", famous: "Gorillas and recovery", rating: 4.3 },
+  "Burundi": { city: "Bujumbura", famous: "Lake Tanganyika", rating: 3.5 },
+  "Democratic Republic of the Congo": { city: "Kinshasa", famous: "Rainforest and wildlife", rating: 3.2 },
+  "Republic of the Congo": { city: "Brazzaville", famous: "Wildlife and culture", rating: 3.5 },
+  "Gabon": { city: "Libreville", famous: "Rainforest and oil", rating: 3.9 },
+  "Equatorial Guinea": { city: "Malabo", famous: "Oil wealth and nature", rating: 3.7 },
+  "Central African Republic": { city: "Bangui", famous: "Wildlife and diamonds", rating: 2.8 },
+  "Chad": { city: "N'Djamena", famous: "Sahara and culture", rating: 3.0 },
+  "Niger": { city: "Niamey", famous: "Sahara and culture", rating: 3.1 },
+  "Mali": { city: "Bamako", famous: "Music and history", rating: 3.2 },
+  "Burkina Faso": { city: "Ouagadougou", famous: "Culture and film", rating: 3.3 },
+  "Benin": { city: "Porto-Novo", famous: "Voodoo and history", rating: 3.6 },
+  "Togo": { city: "Lomé", famous: "Beaches and culture", rating: 3.5 },
+  "Ghana": { city: "Accra", famous: "History and beaches", rating: 4.1 },
+  "Côte d'Ivoire": { city: "Yamoussoukro", famous: "Basilica and culture", rating: 3.8 },
+  "Liberia": { city: "Monrovia", famous: "History and beaches", rating: 3.4 },
+  "Sierra Leone": { city: "Freetown", famous: "Beaches and diamonds", rating: 3.5 },
+  "Guinea": { city: "Conakry", famous: "Mountains and culture", rating: 3.3 },
+  "Guinea-Bissau": { city: "Bissau", famous: "Islands and culture", rating: 3.2 },
+  "Senegal": { city: "Dakar", famous: "Music and history", rating: 4.0 },
+  "The Gambia": { city: "Banjul", famous: "River and beaches", rating: 3.9 },
+  "Mauritania": { city: "Nouakchott", famous: "Sahara and culture", rating: 3.4 },
+  "Zambia": { city: "Lusaka", famous: "Victoria Falls", rating: 4.1 },
+  "Zimbabwe": { city: "Harare", famous: "Victoria Falls and ruins", rating: 3.9 },
+  "Malawi": { city: "Lilongwe", famous: "Lake Malawi", rating: 4.0 },
+  "Mozambique": { city: "Maputo", famous: "Beaches and culture", rating: 3.9 },
+  "Madagascar": { city: "Antananarivo", famous: "Unique wildlife", rating: 4.2 },
+  "Comoros": { city: "Moroni", famous: "Volcanic islands", rating: 3.8 },
+  "Seychelles": { city: "Victoria", famous: "Luxury beaches", rating: 4.7 },
+  "Mauritius": { city: "Port Louis", famous: "Beaches and culture", rating: 4.6 },
+  "Namibia": { city: "Windhoek", famous: "Desert and wildlife", rating: 4.4 },
+  "Botswana": { city: "Gaborone", famous: "Okavango Delta", rating: 4.5 },
+  "Lesotho": { city: "Maseru", famous: "Mountains and culture", rating: 4.1 },
+  "Eswatini": { city: "Mbabane", famous: "Culture and nature", rating: 4.0 },
+  "Angola": { city: "Luanda", famous: "Oil and beaches", rating: 3.7 },
+  "Greenland": { city: "Nuuk", famous: "Ice and northern lights", rating: 4.3 },
+  "Iceland": { city: "Reykjavik", famous: "Geothermal wonders", rating: 4.7 }
+};
+
+function enrichCountryData(country, ratings) {
+  const name = country.name.common;
+  const info = ratings[name] || {
+    city: country.capital ? country.capital[0] : "Unknown",
+    famous: "Culture, landscapes, or history",
+    rating: 4.0
+  };
+  return {
+    ...country,
+    rating: info.rating,
+    mostVisitedCity: info.city,
+    famousFor: info.famous
+  };
+}
+
+async function loadAllCountries() {
+  try {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Loading...</p>';
+    document.querySelector('.top10-title').textContent = 'All Countries';
+    document.querySelectorAll('.continent-tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    document.getElementById('allCountriesLink').classList.add('active');
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+    const data = await response.json();
+    const enrichedCountries = data.map(country => enrichCountryData(country, countryRatings));
+    enrichedCountries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    displayCountries(enrichedCountries);
+  } catch (error) {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Failed to load data. Please check your connection and try again.</p>';
+  }
+}
+
+async function loadContinent(continent) {
+  try {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Loading...</p>';
+    document.querySelector('.top10-title').textContent = continent;
+    document.querySelectorAll('.continent-tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    const continentButton = document.querySelector(`button[onclick="loadContinent('${continent}')"]`);
+    if (continentButton) continentButton.classList.add('active');
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+    const data = await response.json();
+    const filtered = data.filter(c => {
+      const regionMatch = c.region === continent;
+      const subregionMatch = c.subregion === continent;
+      const oceaniaFix = continent === "Oceania" && c.region === "Oceania";
+      const antarcticaFix = continent === "Antarctic" && c.region === "Antarctic";
+      return regionMatch || subregionMatch || oceaniaFix || antarcticaFix;
+    });
+    const enrichedCountries = filtered.map(country => enrichCountryData(country, countryRatings));
+    enrichedCountries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    displayCountries(enrichedCountries);
+  } catch (error) {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Failed to load data. Please check your connection and try again.</p>';
+  }
+}
+
+function displayCountries(countries) {
+  const grid = document.getElementById('countryGrid');
+  grid.innerHTML = '';
+  if (!countries.length) {
+    grid.innerHTML = '<p class="loading">No countries found.</p>';
+    return;
+  }
+  countries.forEach(country => {
+    const card = document.createElement('div');
+    card.classList.add('country-card');
+    const flag = country.flags?.png || 'https://via.placeholder.com/300x150?text=No+Image';
+    const name = country.name?.common || 'Unknown';
+    const capital = country.capital?.[0] || 'N/A';
+    const city = country.mostVisitedCity || 'Unknown';
+    const famous = country.famousFor || 'N/A';
+    const rating = country.rating || 4.0;
+    card.innerHTML = `
+      <img src="${flag}" alt="Flag of ${name}">
+      <h3>${name}</h3>
+      <p>Capital: ${capital}</p>
+      <p>Most Visited City: ${city}</p>
+      <p>Famous For: ${famous}</p>
+      <p>Rating: ⭐ ${rating}/5</p>
+      <button class="discover-btn">Discover Now</button>
+    `;
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('discover-btn')) {
+        openModal(country);
+      } else {
+        openModal(country);
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+async function loadTop10Countries() {
+  try {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Loading...</p>';
+    document.querySelector('.top10-title').textContent = 'Top 10 Countries';
+    document.querySelectorAll('.continent-tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    document.getElementById('top10Link').classList.add('active');
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+    const data = await response.json();
+    const top10Names = ['France', 'Spain', 'United States', 'China', 'Italy', 'Turkey', 'Mexico', 'Thailand', 'Germany', 'United Kingdom'];
+    const top10 = top10Names
+      .map(name => {
+        const country = data.find(c => c.name.common === name);
+        if (!country) return null;
+        return enrichCountryData(country, countryRatings);
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.rating - a.rating);
+    displayCountries(top10);
+  } catch (err) {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Failed to load data. Please check your connection and try again.</p>';
+  }
+}
+
+function openModal(country) {
+  document.getElementById('modalTitle').textContent = country.name.common || 'Unknown';
+  document.getElementById('modalDetails').innerHTML = `
+    Population: ${country.population?.toLocaleString() || 'N/A'}<br>
+    Languages: ${Object.values(country.languages || {}).join(', ') || 'N/A'}<br>
+    Famous For: ${country.famousFor || 'N/A'}
+  `;
+  document.getElementById('countryModal').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('countryModal').style.display = 'none';
+}
+
+document.getElementById('countrySearch').addEventListener('input', async (e) => {
+  try {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Loading...</p>';
+    document.querySelector('.top10-title').textContent = 'Search Results';
+    document.querySelectorAll('.continent-tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    const query = e.target.value.toLowerCase();
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+    const data = await response.json();
+    const filtered = data
+      .filter(c => c.name.common.toLowerCase().includes(query))
+      .map(country => enrichCountryData(country, countryRatings));
+    displayCountries(filtered);
+  } catch (error) {
+    document.getElementById('countryGrid').innerHTML = '<p class="loading">Failed to load data. Please check your connection and try again.</p>';
+  }
+});
+
+window.onload = function() {
+  loadTop10Countries();
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      if (href === '#top10') {
+        loadTop10Countries();
+      } else if (href === '#all-countries') {
+        loadAllCountries();
+      }
+      document.querySelector(href).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+};
+</script>
+
+</body>
+</html>
